@@ -29,10 +29,10 @@ export function exportToCSV(data: AppData): void {
 
   lines.push('');
   lines.push('=== COLLOCATIONS ===');
-  lines.push('Date Added,Phrase,Meaning,Usage,Context,Mastered,Topics');
+  lines.push('Date Added,Phrase,Context,Mastered,Topics,Note');
   for (const c of data.collocations) {
     lines.push(
-      `"${c.dateAdded}","${c.phrase}","${c.meaning}","${c.usage}","${c.context}","${c.mastered}","${c.topics.join('; ')}"`
+      `"${c.dateAdded}","${c.phrase}","${c.context}","${c.mastered}","${c.topics.join('; ')}","${c.note}"`
     );
   }
 
@@ -45,10 +45,10 @@ export function exportToCSV(data: AppData): void {
 
   lines.push('');
   lines.push('=== ESSAYS ===');
-  lines.push('Date Added,Topic,Question,Your Essay,Band 8-9 Essay,Band 5.5-6.5 Essay,Vocabulary,Topics');
+  lines.push('Date Added,Topic,Question,Your Essay,Band 8-9 Essay,Band 5.5-6.5 Essay,Topics');
   for (const e of data.essays) {
     lines.push(
-      `"${e.dateAdded}","${e.topic}","${e.question}","${e.userEssay}","${e.highBandEssay}","${e.lowBandEssay}","${e.vocabulary.join('; ')}","${e.topics.join('; ')}"`
+      `"${e.dateAdded}","${e.topic}","${e.question}","${e.userEssay}","${e.highBandEssay}","${e.lowBandEssay}","${e.topics.join('; ')}"`
     );
   }
 

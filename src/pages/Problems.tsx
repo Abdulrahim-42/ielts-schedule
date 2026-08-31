@@ -7,7 +7,7 @@ import CategoryTabs from '../components/CategoryTabs';
 import TopicsInput from '../components/TopicsInput';
 
 const emptyForm = { category: 'grammar' as Category, title: '', description: '', example: '', topics: [] as string[] };
-const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [] };
+const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [], writingMistakes: [] };
 
 export default function Problems() {
   const [data, setData] = useState<AppData>(EMPTY);
@@ -25,16 +25,22 @@ export default function Problems() {
     const set = new Set<string>();
     data.problems.forEach((p) => p.topics.forEach((t) => set.add(t)));
     data.collocations.forEach((c) => c.topics.forEach((t) => set.add(t)));
+    data.essays.forEach((e) => e.topics.forEach((t) => set.add(t)));
     return Array.from(set).sort();
   }, [data]);
 
   const problems = useMemo(() => {
     let list = data.problems;
     if (filter !== 'all') list = list.filter((p) => p.category === filter);
-    if (topicFilter) list = list.filter((p) => p.topics.includes(topicFilter.toLowerCase()));
+    if (topicFilter) list = list.filter((p) => p.topics.some((t) => t.toLowerCase() === topicFilter.toLowerCase()));
     if (search) {
       const q = search.toLowerCase();
-      list = list.filter((p) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.example.toLowerCase().includes(q) || p.topics.some((t) => t.includes(q)));
+      list = list.filter((p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.example.toLowerCase().includes(q) ||
+        p.topics.some((t) => t.toLowerCase().includes(q))
+      );
     }
     return list.sort((a, b) => b.dateAdded.localeCompare(a.dateAdded));
   }, [data.problems, filter, search, topicFilter]);
@@ -105,7 +111,7 @@ export default function Problems() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Topics</label>
-            <TopicsInput topics={form.topics} onChange={(topics) => updateField('topics', topics)} placeholder="e.g. environment, education..." />
+            <TopicsInput topics={form.topics} onChange={(topics) => updateField('topics', topics)} />
           </div>
           <div className="flex gap-3">
             <button onClick={handleSave} className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">{editingId ? 'Update' : 'Save'}</button>
@@ -142,8 +148,8 @@ export default function Problems() {
                     {problem.solved && <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700 font-medium">Solved</span>}
                   </div>
                   <h3 className="font-semibold text-gray-800">{problem.title}</h3>
-                  {problem.description && <p className="text-sm text-gray-600 mt-1">{problem.description}</p>}
-                  {problem.example && <div className="mt-3 p-3 bg-gray-50 rounded-lg text-sm text-gray-700 italic">{problem.example}</div>}
+                  {problem.description && <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap">{problem.description}</p>}
+                  {problem.example && <div className="mt-3 p-3 bg-gray-50 rounded-lg text-sm text-gray-700 italic whitespace-pre-wrap">{problem.example}</div>}
                   {problem.topics.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-3">
                       {problem.topics.map((t) => <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 font-medium">{t}</span>)}

@@ -4,7 +4,7 @@ import { loadDataAsync } from '../utils/localStorage';
 import { CATEGORY_LABELS, CATEGORY_COLORS } from '../types';
 import type { Category, AppData } from '../types';
 
-const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [] };
+const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [], writingMistakes: [] };
 
 export default function Dashboard() {
   const [data, setData] = useState<AppData>(EMPTY);
@@ -20,6 +20,7 @@ export default function Dashboard() {
   const unsolvedProblems = data.problems.filter((p) => !p.solved).length;
   const totalCollocations = data.collocations.length;
   const masteredCollocations = data.collocations.filter((c) => c.mastered).length;
+  const dueCollocations = data.collocations.filter((c) => !c.mastered && (c.level === 0 || !c.nextReview || c.nextReview <= today)).length;
 
   const last7Days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
@@ -82,10 +83,11 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <QuickLink to="/daily-log" label="Log Today's Tasks" icon="📝" />
         <QuickLink to="/problems" label="Add a Problem" icon="⚠️" />
         <QuickLink to="/collocations" label="Add Collocation" icon="📚" />
+        <QuickLink to="/study" label={`Study (${dueCollocations} due)`} icon="🎓" />
       </div>
     </div>
   );

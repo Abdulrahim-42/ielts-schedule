@@ -1,13 +1,20 @@
 import { NavLink, Outlet } from 'react-router-dom';
 
 const navItems = [
-  { to: '/', label: 'Dashboard', icon: '??' },
-  { to: '/daily-log', label: 'Daily Log', icon: '??' },
-  { to: '/problems', label: 'Problems', icon: '??' },
-  { to: '/collocations', label: 'Collocations', icon: '??' },
-  { to: '/essays', label: 'Essays', icon: '??' },
-  { to: '/progress', label: 'Progress', icon: '??' },
-  { to: '/export', label: 'Export', icon: '??' },
+  { to: '/', label: 'Dashboard', icon: '🏠' },
+  { to: '/daily-log', label: 'Daily Log', icon: '📝' },
+  { to: '/problems', label: 'Problems', icon: '⚠️' },
+  { to: '/collocations', label: 'Collocations', icon: '📚' },
+  { to: '/my-words', label: 'My Words', icon: '📖' },
+  { to: '/synonyms', label: 'Synonyms', icon: '🔗' },
+  { to: '/topics', label: 'Topics', icon: '🏷️' },
+  { to: '/essays', label: 'Essays', icon: '✍️' },
+  { to: '/writing-task1', label: 'Writing Task 1', icon: '📊' },
+  { to: '/writing-mistakes', label: 'Writing Mistakes', icon: '❌' },
+  { to: '/study', label: 'Study', icon: '⏰' },
+  { to: '/band-score', label: 'Band Score', icon: '📊' },
+  { to: '/progress', label: 'Progress', icon: '📈' },
+  { to: '/export', label: 'Export', icon: '📤' },
 ];
 
 export default function Layout() {

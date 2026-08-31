@@ -7,7 +7,7 @@ import Timer from '../components/Timer';
 
 const allCategories: Category[] = ['grammar', 'reading', 'listening', 'speaking', 'spelling', 'collocations', 'writing'];
 const today = () => new Date().toISOString().split('T')[0];
-const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [] };
+const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [], writingMistakes: [] };
 
 export default function DailyLog() {
   const [data, setData] = useState<AppData>(EMPTY);
@@ -85,7 +85,7 @@ export default function DailyLog() {
 
   const handleSessionComplete = useCallback(
     async (minutes: number) => {
-      await addStudySessionAsync({ id: uuid(), date: selectedDate, durationMinutes: minutes, category: 'grammar', notes: '' });
+      await addStudySessionAsync({ id: uuid(), date: selectedDate, durationMinutes: minutes, category: 'grammar', notes: '', testName: '' });
       await persistLog((log) => ({ ...log, studyMinutes: log.studyMinutes + minutes }));
     },
     [selectedDate, data]

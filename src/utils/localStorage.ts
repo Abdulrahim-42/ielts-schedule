@@ -1,4 +1,4 @@
-import type { AppData, DailyLog, Problem, Collocation, StudySession, Essay } from '../types';
+import type { AppData, DailyLog, Problem, Collocation, StudySession, Essay, WritingMistake, Topic, Task1Essay } from '../types';
 
 const API = '';
 
@@ -15,14 +15,15 @@ async function api<T>(path: string, options?: RequestInit): Promise<T> {
 
 // ─── Load all data ───
 export async function loadDataAsync(): Promise<AppData> {
-  const [dailyLogs, problems, collocations, studySessions, essays] = await Promise.all([
+  const [dailyLogs, problems, collocations, studySessions, essays, writingMistakes] = await Promise.all([
     api<DailyLog[]>('/api/daily-logs'),
     api<Problem[]>('/api/problems'),
     api<Collocation[]>('/api/collocations'),
     api<StudySession[]>('/api/study-sessions'),
     api<Essay[]>('/api/essays'),
+    api<WritingMistake[]>('/api/writing-mistakes'),
   ]);
-  return { dailyLogs, problems, collocations, studySessions, essays };
+  return { dailyLogs, problems, collocations, studySessions, essays, writingMistakes };
 }
 
 // ─── Daily Log ───
@@ -84,6 +85,53 @@ export async function updateEssayAsync(essay: Essay): Promise<void> {
 
 export async function deleteEssayAsync(id: string): Promise<void> {
   await api('/api/essays/' + id, { method: 'DELETE' });
+}
+
+// ─── Topics ───
+export async function getTopicsAsync(): Promise<Topic[]> {
+  return api<Topic[]>('/api/topics');
+}
+
+export async function addTopicAsync(name: string): Promise<void> {
+  await api('/api/topics', { method: 'POST', body: JSON.stringify({ name }) });
+}
+
+export async function deleteTopicAsync(id: string): Promise<void> {
+  await api('/api/topics/' + id, { method: 'DELETE' });
+}
+
+// ─── Writing Mistakes ───
+export async function addWritingMistakeAsync(mistake: WritingMistake): Promise<void> {
+  await api('/api/writing-mistakes', { method: 'POST', body: JSON.stringify(mistake) });
+}
+
+export async function updateWritingMistakeAsync(mistake: WritingMistake): Promise<void> {
+  await api('/api/writing-mistakes/' + mistake.id, { method: 'PUT', body: JSON.stringify(mistake) });
+}
+
+export async function deleteWritingMistakeAsync(id: string): Promise<void> {
+  await api('/api/writing-mistakes/' + id, { method: 'DELETE' });
+}
+
+export async function scanEssayForMistakesAsync(text: string, taskType: string, essayId: string): Promise<{ detected: { mistakeText: string; correctText: string; category: string }[] }> {
+  return api('/api/writing-mistakes/scan', { method: 'POST', body: JSON.stringify({ text, taskType, essayId }) });
+}
+
+// ─── Writing Task 1 Essays ───
+export async function loadTask1EssaysAsync(): Promise<Task1Essay[]> {
+  return api<Task1Essay[]>('/api/task1-essays');
+}
+
+export async function addTask1EssayAsync(essay: Task1Essay): Promise<Task1Essay> {
+  return api<Task1Essay>('/api/task1-essays', { method: 'POST', body: JSON.stringify(essay) });
+}
+
+export async function getTask1EssayAsync(id: string): Promise<Task1Essay> {
+  return api<Task1Essay>(`/api/task1-essays/${id}`);
+}
+
+export async function deleteTask1EssayAsync(id: string): Promise<void> {
+  await api('/api/task1-essays/' + id, { method: 'DELETE' });
 }
 
 // ─── Timer (uses localStorage - fast, synchronous, always available) ───

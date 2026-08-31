@@ -3,7 +3,7 @@ import { loadDataAsync } from '../utils/localStorage';
 import { CATEGORY_LABELS, CATEGORY_COLORS } from '../types';
 import type { Category, AppData } from '../types';
 
-const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [] };
+const EMPTY: AppData = { dailyLogs: [], problems: [], collocations: [], studySessions: [], essays: [], writingMistakes: [] };
 
 export default function Progress() {
   const [data, setData] = useState<AppData>(EMPTY);

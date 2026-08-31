@@ -22,3 +22,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+old-wal.db
+
+# Temp/recovery files
+recovery/
+verify-tmp.mjs
+server/append_part1.txt
+server/append_part2.txt
+
+# Uploads
+public/uploads/

@@ -29,12 +29,22 @@ export interface Problem {
 export interface Collocation {
   id: string;
   phrase: string;
-  meaning: string;
-  usage: string;
+  definition: string;
+  writingTask1Example: string;
+  writingTask2Example: string;
+  speakingExample: string;
   context: 'speaking' | 'writing' | 'both';
   dateAdded: string;
   mastered: boolean;
   topics: string[];
+  level: number;
+  lastReviewed: string;
+  nextReview: string;
+  reviewCount: number;
+  note: string;
+  source: 'seed' | 'custom';
+  synonyms: string[];
+  antonyms: string[];
 }
 
 export interface StudySession {
@@ -43,6 +53,7 @@ export interface StudySession {
   durationMinutes: number;
   category: Category;
   notes: string;
+  testName: string;
 }
 
 export interface Essay {
@@ -52,9 +63,21 @@ export interface Essay {
   userEssay: string;
   highBandEssay: string;
   lowBandEssay: string;
-  vocabulary: string[];
   topics: string[];
   dateAdded: string;
+}
+
+export interface WritingMistake {
+  id: string;
+  mistakeText: string;
+  correctText: string;
+  category: 'grammar' | 'spelling' | 'vocabulary' | 'task_response';
+  taskType: 'task1' | 'task2' | 'both';
+  count: number;
+  firstSeen: string;
+  lastSeen: string;
+  essayIds: string[];
+  solved: boolean;
 }
 
 export interface AppData {
@@ -63,6 +86,12 @@ export interface AppData {
   collocations: Collocation[];
   studySessions: StudySession[];
   essays: Essay[];
+  writingMistakes: WritingMistake[];
+}
+
+export interface Topic {
+  id: string;
+  name: string;
 }
 
 export const CATEGORY_LABELS: Record<Category, string> = {
@@ -84,3 +113,6 @@ export const CATEGORY_COLORS: Record<Category, string> = {
   collocations: '#ec4899',
   writing: '#06b6d4',
 };
+
+export type { QuestionType, Task1Essay } from './task1';
+export { QUESTION_TYPE_LABELS } from './task1';
